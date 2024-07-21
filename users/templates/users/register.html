@@ -1,0 +1,26 @@
+{% extends "authentication.html" %}
+
+{% load static %}
+
+{% block header %}
+    {% include 'users/includes/header.html'  %}
+{% endblock header %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'header.css' %}">
+{% endblock styles %}
+
+
+
+{% block content %}
+    {% include "users/includes/messages.html" %}
+    
+    <form class='form' method="POST">
+        {% csrf_token %}
+        {{register_form.username}}
+        {{register_form.password1}}
+        {{register_form.password2}}
+
+        <input class='form__submit' type="submit" value="Register">
+    </form>
+{% endblock content %}

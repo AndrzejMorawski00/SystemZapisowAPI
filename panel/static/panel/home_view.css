@@ -1,0 +1,44 @@
+.wrapper {
+    display: flex;
+    gap: 3rem;
+    padding-top: 2rem;
+}
+
+.home {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.home__link {
+    max-width: fit-content;
+    position: relative;
+    display: inline-block;
+    font-size: 2rem;
+    color: var(--foreground-color);
+    letter-spacing: 2px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s;
+    padding-top: 0.5rem;
+}
+
+.home__link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--link-underline-color);
+    transition: 0.2s, left 0.2s;
+}
+
+.home__link:hover {
+    color: var(--foreground-color-hover);
+}
+
+.home__link:hover::after {
+    width: 100%;
+    left: 0;
+}

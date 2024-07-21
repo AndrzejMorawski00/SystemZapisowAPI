@@ -1,0 +1,29 @@
+{% extends "panel.html" %} 
+{% load static %}
+{% block title %} Panel {% endblock title %} 
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'panel/home_view.css' %}" />
+{% endblock styles %}
+
+{% block header %} 
+    {% include "panel/includes/header.html" %} 
+{% endblock header %}
+{% block content %}
+
+{% include 'panel/includes/messages.html' %}
+<div class="wrapper">
+    {% if mod %}
+    <div class='home'>
+        <a class='home__link' href="{% url 'panel:fetch-semesters-view' %}">Fetch Semesters</a>
+        <a class='home__link' href="{% url 'panel:add-semester-view' %}">Add Semester</a>
+        <a class='home__link' href="{% url 'panel:fetch-subject-metadata-view' %}">Fetch Subjects Metadata</a>
+    </div>
+    {% endif %}
+    <div class='home'>
+        <a class='home__link' href="{% url 'panel:semester-list-view' %}">View Semesters</a>
+        <a class='home__link' href="{% url 'panel:metadata-list-view' 'tag' %}">View Tags</a>
+        <a class='home__link' href="{% url 'panel:metadata-list-view' 'effect'  %}">View Effects</a>
+        <a class='home__link' href="{% url 'panel:metadata-list-view' 'type' %}">View Subject Types</a>
+    </div>
+</div>
+{% endblock content %}

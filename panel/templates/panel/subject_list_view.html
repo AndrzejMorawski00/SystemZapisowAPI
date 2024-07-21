@@ -1,0 +1,32 @@
+{% extends "panel.html" %} 
+{% load static %}
+{% block title %} Panel {% endblock title %} 
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'panel/subject_list_view.css' %}">
+{% endblock styles %}
+{% block header %} 
+    {% include "panel/includes/header.html" %} 
+{% endblock header %}
+{% block content %}
+<div class='subject__wrapper'>
+    <form class='form' method="POST">
+        {% csrf_token %}
+        <input class='form__seach' type="text" name="search_value" id="search_value" />
+        <input chass='form__submit' type="submit" value="Search" />
+    </form>
+    <div class='navigation'>
+        {% if page_obj.has_previous %}
+        <a class='navigation__link' href="?page={{page_obj.previous_page_number }}"><button>Prev Page</button></a>
+        {% endif %} {% if page_obj.has_next %}
+        <a class='navigation__link' href="?page={{ page_obj.next_page_number }}"><button>Next Page</button></a>
+        {% endif %}
+    </div>
+    <ul class='list'>
+        {% for data in page_obj %}
+            {% include 'panel/includes/subject.html' %}
+        {% endfor %}
+    </ul>
+</div>
+
+
+{% endblock content %}

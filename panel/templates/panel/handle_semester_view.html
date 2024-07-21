@@ -1,0 +1,28 @@
+{% extends "panel.html" %} 
+{% load static %}
+{% block title %}{{action}} Semester{% endblock title %} 
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'panel/handle_semester.css' %}" />
+{% endblock styles %}
+{% block header %} 
+    {% include "panel/includes/header.html" %} 
+{% endblock header %} 
+{% block content %} 
+{% include 'panel/includes/messages.html' %}
+<form method='POST' class='form'>
+    {% csrf_token %}
+    <div class='form__wrapper'>
+        <label class='form__label'  for="link">Link:</label>
+        {{semester_form.link}}
+    </div>
+    <div class='form__wrapper'>
+        <label class='form__label'  for="name">Name:</label>
+        {{semester_form.name}}
+    </div>
+    <div class='form__inline'>
+        <label class='form__label' for="fetched">Fetched?</label>
+        {{semester_form.fetched}}
+    </div>
+    <input class='form__submit' type="submit" value="{{action}}">
+</form>
+{% endblock content %}

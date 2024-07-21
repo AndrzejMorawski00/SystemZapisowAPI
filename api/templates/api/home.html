@@ -1,0 +1,18 @@
+{% extends "panel.html" %} 
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'header.css' %}">
+    <link rel="stylesheet" href="{% static 'api/home.css' %}">
+{% endblock styles %}
+{% block header %}
+{% include "api/includes/header.html" %}
+{% endblock header %}
+{% block content %}
+<div class='main'>
+    <a class='main__link' href="">Courses</a>
+    <a class='main__link' href="">Semesters</a>
+    <a class='main__link' href="">Tags</a>
+    <a class='main__link' href="">Effects</a>
+    <a class='main__link' href="">Types</a>
+</div>
+{% endblock content %}

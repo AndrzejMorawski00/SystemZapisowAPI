@@ -1,0 +1,14 @@
+<div class='header'>
+    <div class='header__left'>
+        <a class='header__link' href="{% url 'panel:home-view' %}">Panel</a>
+    </div>
+    <div class='header__auth'>
+        {% if user.is_authenticated %}
+        <a class='header__link' href="{% url 'users:logout-view' %}">Logout</a>
+        {% else %}
+        <a class='header__link' href="{% url 'users:login-view' %}">Login</a>
+        <a class='header__link' href="{% url 'users:register-view' %}">Register</a>
+        {% endif %}
+    </div>
+    
+</div>

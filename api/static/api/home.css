@@ -1,0 +1,39 @@
+.main {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-around;
+    width: 100vw;
+    margin-top: 3rem;
+}
+
+.main__link {
+    position: relative;
+    display: inline-block;
+    font-size: 2rem;
+    color: var(--foreground-color);
+    letter-spacing: 2px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.2s;
+    padding-top: 0.5rem;
+}
+
+.main__link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--link-underline-color);
+    transition: 0.2s, left 0.2s;
+}
+
+.main__link:hover {
+    color: var(--foreground-color-hover);
+}
+
+.main__link:hover::after {
+    width: 100%;
+    left: 0;
+}

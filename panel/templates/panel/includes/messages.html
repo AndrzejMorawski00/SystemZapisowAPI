@@ -1,0 +1,9 @@
+{% if messages %}
+<ul class='message'>
+    {% for message in messages %}
+        <li class='message__item'>
+            <p class='message__p'>{{message}}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endif %}
