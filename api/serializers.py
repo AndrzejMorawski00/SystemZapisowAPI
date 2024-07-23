@@ -27,7 +27,7 @@ class CourseTypeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CourseSerializer(serializers.ModelSerializer):
+class CourseReadOnlySerializer(serializers.ModelSerializer):
     type = serializers.PrimaryKeyRelatedField(read_only=True)
     tags = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     effects = serializers.PrimaryKeyRelatedField(many=True, read_only=True)

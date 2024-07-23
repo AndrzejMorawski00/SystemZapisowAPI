@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.template.defaultfilters import slugify
-
+from .slug_methods import unique_slugify
 # Create your models here.
 
 
@@ -31,6 +31,14 @@ class CourseEffect(models.Model):
 
 class CourseTag(models.Model):
     name = models.CharField(max_length=100)
+    shortcut = models.CharField(max_length=100, default='')
+
+    def save(self, *args, **kwargs):
+        shortcut_letters = [s[0].capitalize() if len(s) > 1 else s[0]
+                            for s in self.name.split(' ')]
+        shortcut = ''.join(shortcut_letters)
+        self.shortcut = shortcut
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.pk} {self.name}'
@@ -38,6 +46,7 @@ class CourseTag(models.Model):
 
 class CourseType(models.Model):
     name = models.CharField(max_length=100)
+    shortcut = models.CharField(max_length=10, default='')
 
     def __str__(self):
         return f'{self.pk} {self.name}'
@@ -46,13 +55,16 @@ class CourseType(models.Model):
 class Semester(models.Model):
     link = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=100, default='')
+    slug = models.SlugField(max_length=100, unique=True)
     fetched = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        slug_str = f'{self.link}'.replace('/', '-')
+        unique_slugify(self, slug_str)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.name}'
-
-
 
 
 class InvalidData(models.Model):

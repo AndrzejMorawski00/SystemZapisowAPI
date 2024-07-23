@@ -106,4 +106,3 @@ class SiteCrawler:
 
 if __name__ == '__main__':
     sc = SiteCrawler('https://zapisy.ii.uni.wroc.pl')
-

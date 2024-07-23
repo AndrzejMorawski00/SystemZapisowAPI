@@ -3,7 +3,12 @@ from .models import Semester, CourseEffect, CourseTag, CourseType, Course
 # Register your models here.
 
 
-admin.site.register(Semester)
+class SemesterAdmin(admin.ModelAdmin):
+    exclude = ('slug', )
+
+
+
+admin.site.register(Semester, SemesterAdmin)
 admin.site.register(Course)
 admin.site.register(CourseTag)
 admin.site.register(CourseType)
