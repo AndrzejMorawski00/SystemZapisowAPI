@@ -19,9 +19,13 @@ def login_view(request: HttpRequest):
             username: str = login_form.cleaned_data.get('username', '')
             password: str = login_form.cleaned_data.get('password', '')
             user = authenticate(request, username=username, password=password)
-            if user is not None and user.is_staff:
-                login(request, user)
-                return redirect('panel:home-view')
+            if user is not None:
+                if user.is_staff:
+                    login(request, user)
+                    return redirect('panel:home-view')
+                else:
+                    messages.error(
+                        request, "You don't have permission to login")
             else:
                 messages.error(request, 'Invalid username or password')
         else:
@@ -44,10 +48,9 @@ def register_view(request: HttpRequest):
             user: AbstractUser = register_form.save(commit=False)
             user.save()
             messages.success(
-                request, 'Your account was created. You can now log in')
+                request, 'Your account was created. You can now login')
             return redirect('users:login-view')
         else:
-            print(register_form.error_messages)
             for message in register_form.error_messages.values():
                 messages.error(request, message)
 

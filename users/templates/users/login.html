@@ -1,18 +1,21 @@
-{% extends "authentication.html" %}
+{% extends "base.html" %}
 {% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'users/authentication.css' %}" />
+    <link rel="stylesheet" href="{% static 'users/header.css' %}">
+    <link rel="stylesheet" href="{% static 'users/messages.css' %}">
+{% endblock styles %}
+{% block title %}Login{% endblock title %}
 {% block header %}
     {% include 'users/includes/header.html'  %}
 {% endblock header %}
-{% block styles %}
-    <link rel="stylesheet" href="{% static 'header.css' %}">
-{% endblock styles %}
 {% block content %}
     {% include "users/includes/messages.html" %}
-    
-    <form class='form' method="POST">
+    <form class='auth-form' method="POST">
         {% csrf_token %}
         {{login_form.username}}
         {{login_form.password}}
-        <input class='form__submit' type="submit" value="Login">
+        <input class='auth-form__submit' type="submit" value="Login">
     </form>
 {% endblock content %}

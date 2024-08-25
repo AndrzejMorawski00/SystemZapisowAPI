@@ -1,0 +1,32 @@
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+}
+
+.header__left {
+    display: flex;
+    padding: 2rem 5rem;
+}
+
+.header__auth {
+    display: flex;
+    padding: 2rem 5rem;
+    gap: 1.5rem;
+}
+
+.header__link {
+    white-space: nowrap;
+    min-width: fit-content;
+    font-size: 3.5rem;
+    letter-spacing: 10px;
+    color: var(--foreground-color);
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.header__link:hover {
+    color: var(--foreground-color-hover);
+    scale: 1.02;
+}

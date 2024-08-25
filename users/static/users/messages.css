@@ -1,0 +1,15 @@
+.message {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.message__item {
+    list-style: none;
+    display: flex;
+}
+
+.message__p {
+    color: var(--foreground-color);
+    font-size: 2rem;
+}

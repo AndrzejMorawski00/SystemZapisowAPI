@@ -14,18 +14,18 @@ class RegisterForm(UserCreationForm):
         super().__init__(*args, **kwargs)
 
         self.fields["username"].widget.attrs.update({
-            'class': 'form__input',
+            'class': 'auth-form__input',
             'placeholder': 'Username',
             'id': 'username',
         })
 
         self.fields["password1"].widget.attrs.update({
-            'class': 'form__input',
+            'class': 'auth-form__input',
             'placeholder': 'Password',
             'id': 'password1',
         })
         self.fields["password2"].widget.attrs.update({
-            'class': 'form__input',
+            'class': 'auth-form__input',
             'placeholder': 'Repeat Password',
             'id': 'password2',
         })
@@ -37,13 +37,13 @@ class LoginForm(AuthenticationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
 
         self.fields["username"].widget.attrs.update({
-            'class': 'form__input',
+            'class': 'auth-form__input',
             'placeholder': 'Username',
             'id': 'username',
         })
 
         self.fields["password"].widget.attrs.update({
-            'class': 'form__input',
+            'class': 'auth-form__input',
             'placeholder': 'Password',
             'id': 'password1',
         })

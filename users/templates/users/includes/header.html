@@ -1,12 +1,10 @@
-<div class="header">
-    <div class="header__left">
-        <a class="header__link" href="{% url 'api:index-view' %}">Home</a>
-    </div>
-    <div class="header__auth">
-        {% if login %}
-        <a class="header__link" href="{% url 'users:register-view' %}">Register</a>
-        {% endif %} {% if register %}
-        <a class="header__link" href="{% url 'users:login-view' %}">Login</a>
-        {% endif %}
-    </div>
+<div class="header__left">
+    <a class="header__link" href="{% url 'api:index-view' %}">Home</a>
+</div>
+<div class="header__auth">
+    {% if login %}
+    <a class="header__link" href="{% url 'users:register-view' %}">Register</a>
+    {% endif %} {% if register %}
+    <a class="header__link" href="{% url 'users:login-view' %}">Login</a>
+    {% endif %}
 </div>
