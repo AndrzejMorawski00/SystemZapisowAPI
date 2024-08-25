@@ -1,10 +1,11 @@
-<div class='header'>
-    <div class='header__left'>
-        <a class='header__link' href="{% url 'api:index-view' %}">Home Page</a>
-        <a class='header__link' href="{% url 'api:api-view' %}">API</a>
-        <a class='header__link' href="{% url 'panel:home-view' %}">Panel</a>
+<div class="header">
+    <div class="header__left">
+        <a class="header__link" href="{% url 'api:index-view' %}">Home Page</a>
+        {% if is_home %} {% else %}
+        <a class="header__link" href="{% url 'panel:home-view' %}">Panel</a>
+        {% endif %}
     </div>
-    <div class='header__auth'>
-        <a class='header__link' href="{% url 'users:logout-view' %}">Logout</a>
+    <div class="header__auth">
+        <a class="header__link" href="{% url 'users:logout-view' %}">Logout</a>
     </div>
 </div>

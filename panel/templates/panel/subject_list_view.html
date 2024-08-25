@@ -2,23 +2,27 @@
 {% load static %}
 {% block title %} Panel {% endblock title %} 
 {% block styles %}
-    <link rel="stylesheet" href="{% static 'panel/subject_list_view.css' %}">
+    <link rel="stylesheet" href="{% static 'panel/list_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'panel/item.css' %}">
 {% endblock styles %}
 {% block header %} 
     {% include "panel/includes/header.html" %} 
 {% endblock header %}
 {% block content %}
-<div class='subject__wrapper'>
-    <form class='form' method="POST">
+<div>
+    <form class='form__wrapper' method="POST">
         {% csrf_token %}
-        <input class='form__seach' type="text" name="search_value" id="search_value" />
-        <input chass='form__submit' type="submit" value="Search" />
+        <input class='form__search' type="text" name="search_value" id="search_value" maxlength=50/>
+        <button class='form__submit' type="submit">
+            <img  src="{% static 'img/loop.svg'  %}" alt="Search" fill='white'/>
+        </button>
     </form>
     <div class='navigation'>
         {% if page_obj.has_previous %}
-        <a class='navigation__link' href="?page={{page_obj.previous_page_number }}"><button>Prev Page</button></a>
-        {% endif %} {% if page_obj.has_next %}
-        <a class='navigation__link' href="?page={{ page_obj.next_page_number }}"><button>Next Page</button></a>
+        <a class='navigation__link' href="?page={{page_obj.previous_page_number }}">&lt;&lt;</a>
+        {% endif %} 
+        {% if page_obj.has_next %}
+        <a class='navigation__link' href="?page={{ page_obj.next_page_number }}">&gt;&gt;</a>
         {% endif %}
     </div>
     <ul class='list'>

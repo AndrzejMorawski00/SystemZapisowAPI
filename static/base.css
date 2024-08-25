@@ -1,22 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
-    --background-color: #1E1E1E;
-    --foreground-color: #D4D4D4;
-    --foreground-color-hover: #D6D6D6;
+    --background-color: #1e1e1e;
+    --foreground-color: #d4d4d4;
+    --foreground-color-hover: #d7d7d7;
     --link-underline-red-color: red;
     --link-underline-blue-color: blue;
     --auth-button-color: #2e82c7;
-    --auth-button-color-hover: #569CD6;
-    --secondary-color: #9CDCFE;
-    --success-color: #6A9955;
-    --warning-color: #CE9178;
-    --error-color: #F44747;
-    --info-color: #4EC9B0;
-    --input-background-color: #2D2D2D;
-    --input-border-color: #3C3C3C;
+    --auth-button-color-hover: #569cd6;
+    --secondary-color: #9cdcfe;
+    --success-color: #6a9955;
+    --warning-color: #ce9178;
+    --error-color: #f44747;
+    --info-color: #4ec9b0;
+    --input-background-color: #2d2d2d;
+    --input-border-color: #3c3c3c;
 }
-
 
 * {
     padding: 0;
@@ -26,15 +25,10 @@
     font-family: "Montserrat", sans-serif;
 }
 
-a:hover,
-a:visited,
-a:active {
-    transform: scale(1.02);
-}
-
 body {
     background-color: var(--background-color);
-    width: 100vw;
+    max-width: 100vw;
+    max-height: 100vh;
 }
 
 .content {

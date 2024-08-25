@@ -1,7 +1,7 @@
-<li>
-    <p>{{forloop.counter}}</p>
-    <p>{{data.name}}</p>
-    {% if edit %}
-    <a href="{% url 'panel:subject-edit-view' data.pk  %}">Edit</a>
-    {% endif %}
+<li class="item">
+    <div class='item__wrapper'>
+        <p class="item__p">{{forloop.counter}}</p>
+        <p class="item__p">{{data.name}}</p>
+    </div>
+    <a class="item__a" href="{% url 'panel:subject-edit-view' data.pk  %}">Edit</a>
 </li>

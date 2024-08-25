@@ -1,40 +1,50 @@
-{% extends "panel.html" %} {% block title %} Panel {% endblock title %} {% block header %} 
-{% include "panel/includes/header.html" %} {% endblock header %} {% block content %} 
+{% extends "panel.html" %} 
+{% load static %}
+{% block title %} Panel {% endblock title %} 
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'panel/list_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'panel/item.css' %}">
+{% endblock styles %}
+
+{% block header %} 
+    {% include "panel/includes/header.html" %} 
+{% endblock header %} 
+
+{% block content %} 
 
 {% if name %}
-<div>
+<div class='list__wrapper'>
     {% include "panel/includes/messages.html" %}
-    <h1>{{name}}</h1>
-    <form method="POST">
+    <form class='form' method="POST">
+        <h1 class='form__heading'>{{name}}:</h1>
         {% csrf_token %}
-        <input type="text" name="search_value" id="search_value" />
-        <input type="submit" value="Search" />
+        <div class="form__wrapper">
+            <input class='form__search' type="text" name="search_value" id="search_value" />
+            <button class='form__submit' type="submit">
+                <img  src="{% static 'img/loop.svg'  %}" alt="Search" fill='white'/>
+            </button>
+        </div>
     </form>
-    <div>
+    <div class='navigation'>
         {% if page_obj.has_previous %}
-        <a href="?page={{page_obj.previous_page_number }}"><button>Prev Page</button></a>
+        <a class='navigation__link'  href="?page={{page_obj.previous_page_number }}">&lt;&lt;</a>
         {% endif %} {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}"><button>Next Page</button></a>
+        <a class='navigation__link'  href="?page={{ page_obj.next_page_number }}">&gt;&gt;</a>
         {% endif %}
     </div>
-    <ul>
+    <ul class='list'>
        {% if page_obj %}
        {% for data in page_obj %}
-       <li>
-           <p>{{forloop.counter}}</p>
-           <p>{{data.name}}</p>
-           {% if edit %}
-           <a href="{% url 'panel:metadata-edit-view' datatype data.pk  %}">Edit</a>
-           {% endif %}
-       </li>
+            {% include 'panel/includes/metadata_item.html' %}
        {% endfor %}
        {% else %} 
-        <h2>List is Empty</h2>
+        <h2 class='list__h2'>List is Empty</h2>
        {% endif %}
     </ul>
 </div>
 {% else %}
-<div>
-    <h1>List is Empty</h1>
+<div class='list__empty' >
+    <h1 class='list__h1'>List is Empty</h1>
 </div>
 {% endif %} {% endblock content %}

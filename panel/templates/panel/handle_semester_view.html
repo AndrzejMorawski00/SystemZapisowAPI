@@ -19,9 +19,9 @@
         <label class='form__label'  for="name">Name:</label>
         {{semester_form.name}}
     </div>
-    <div class='form__inline'>
-        <label class='form__label' for="fetched">Fetched?</label>
+    <div class='form__checkbox'>
         {{semester_form.fetched}}
+        <label class='form__label' for="fetched">Fetched?</label>
     </div>
     <input class='form__submit' type="submit" value="{{action}}">
 </form>

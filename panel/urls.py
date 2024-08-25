@@ -3,6 +3,7 @@ from . import views
 
 app_name = 'panel'
 
+
 urlpatterns = [
     path('', views.panel_home_view, name='home-view'),
     # Fetching

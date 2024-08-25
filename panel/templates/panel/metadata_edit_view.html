@@ -1,8 +1,23 @@
-{% extends "panel.html" %} {% block title %} Panel {% endblock title %} {% block header %} 
-{% include "panel/includes/header.html" %} {% endblock header %} {% block content %} 
-<form method="POST">
-    {% csrf_token %}
-    <input type="text" name='obj_name' value="{{model.name}}">
-    <input type="submit" value="Edit">
-</form>
+{% extends "panel.html" %}
+{% load static %}
+{% block title %} Edit {{name}} {% endblock title %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'panel/edit_metadata.css' %}">
+{% endblock styles %}
+{% block header %} 
+{% include "panel/includes/header.html" %} 
+{% endblock header %} 
+
+{% block content %} 
+<div class='wrapper'>
+    <p class='form__p'>Edit {{name}}:</p>
+    <form class='form' method="POST">
+        {% csrf_token %}
+        <input class='form__input' type="text" name='obj_name' value="{{model.name}}" required>
+        <div class='form__wrapper'>
+            <button class='form__button form__submit'  type="submit">Edit</button>
+            <a   href="{% url 'panel:metadata-list-view' datatype %}"><button class='form__button form__cancel' type='button'>Cancel</button></a>
+        </div>
+    </form>
+</div>
 {% endblock content %}

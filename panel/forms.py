@@ -33,4 +33,5 @@ class SemesterForm(ModelForm):
         })
         self.fields["fetched"].widget.attrs.update({
             'class': 'form__checkbox',
+            'id' : 'fetched'
         })

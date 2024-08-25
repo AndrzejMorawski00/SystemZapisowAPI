@@ -8,22 +8,15 @@ from typing import Any, Dict, List, Literal, Optional, Type,  cast
 
 from panel.utils import has_permission
 
-
 from .site_crawler import SiteCrawler
 from .forms import CourseForm, SemesterForm
-from .decoratos import user_authenticated, permission_based_access
+from .decoratos import user_authenticated
 from .models import Semester, CourseEffect, CourseTag, CourseType, Course
-# Create your views here.
-
-
 
 
 @user_authenticated
 def panel_home_view(request: HttpRequest):
-    is_admin = request.user.is_staff or request.user.is_superuser  # type:ignore
-    mod = True if request.user.groups.filter(  # type:ignore
-        name__in=['mod']).exists() else False
-    return render(request, 'panel/home_view.html', {'mod': mod or is_admin, })
+    return render(request, 'panel/home_view.html', {'is_home': True})
 
 
 @user_authenticated
@@ -86,14 +79,13 @@ def fetch_subject_metadata_view(request: HttpRequest):
 
 @user_authenticated
 def semester_list_view(request: HttpRequest):
-    mod = has_permission(request, ['mod'])
     if request.method == 'POST':
         counter = 0
         checked_semesters = request.POST.getlist('semester_checked') or []
         tags = list(CourseTag.objects.all())
         effects = list(CourseEffect.objects.all())
         types = list(CourseType.objects.all())
-        
+
         if not (tags and effects and types):
             messages.error(request, 'You need to fetch Metadata First')
             return redirect('panel:semester-list-view')
@@ -151,24 +143,23 @@ def semester_list_view(request: HttpRequest):
     invalid_semesters = Course.objects.filter(type=None)
     for s in invalid_semesters:
         print(s.pk, s)
-    return render(request, 'panel/semester_list_view.html', {'semester_list': semester_list, 'mod': mod})
+    return render(request, 'panel/semester_list_view.html', {'semester_list': semester_list})
 
 
 @user_authenticated
 def subject_list_view(request: HttpRequest, pk: int):
-    MAX_PAGE_SIZE = 30
+    MAX_PAGE_SIZE = 8
     filter_value = request.POST.get('search_value') or ''
     page_number = request.GET.get('page') or 1
 
     try:
-        edit = has_permission(request, ['mod'])
         semester = Semester.objects.get(pk=pk)
         data = Course.objects.filter(semester=semester.pk)
         data = data.filter(name__contains=filter_value).order_by(
             'name') if filter_value else data.order_by('name')
         paginator = Paginator(data, MAX_PAGE_SIZE)
         page_obj = paginator.get_page(page_number)
-        return render(request, 'panel/subject_list_view.html', {'page_obj': page_obj, 'edit': edit})
+        return render(request, 'panel/subject_list_view.html', {'page_obj': page_obj})
     except Semester.DoesNotExist:
         messages.error(request, "Semester with this id doesn't exist")
         return redirect('semester-list-view')
@@ -201,10 +192,12 @@ def metadata_list_view(request: HttpRequest, datatype: Literal['tag', 'effect', 
             name__contains=filter_value).order_by('name') if filter_value else model.objects.all().order_by('name')
         paginator = Paginator(data, MAX_PAGE_SIZE)
         page_obj = paginator.get_page(page_number)
-    return render(request, 'panel/metadata_list_view.html', {'page_obj': page_obj, 'name': name, 'datatype': datatype, 'edit': edit})
+        return render(request, 'panel/metadata_list_view.html', {'page_obj': page_obj, 'name': name, 'datatype': datatype, 'edit': edit})
+    else:
+        return redirect('panel:home-view')
 
 
-@permission_based_access(groups=['mod'])
+@user_authenticated
 def metadata_edit_view(request: HttpRequest, datatype: Literal['tag', 'effect', 'type'], obj_pk: int):
     datatype_dict: Dict[str, Dict[str, Any]] = {
         'tag': {
@@ -233,36 +226,41 @@ def metadata_edit_view(request: HttpRequest, datatype: Literal['tag', 'effect', 
         if obj_name:
             setattr(obj, 'name', obj_name)
             obj.save()
-        messages.success(
-            request, f'{datatype_dict[datatype]['name']} saved succesfully')
+            messages.success(
+                request, f'{datatype_dict[datatype]['name']} saved succesfully')
+        else:
+            messages.error(request, f'Failed to save{
+                           datatype_dict[datatype]['name']}')
         return redirect('panel:metadata-list-view', datatype=datatype)
     else:
         name = datatype_dict[datatype]['name']
-        return render(request, 'panel/metadata_edit_view.html', {'model': obj, 'name': name})
+        return render(request, 'panel/metadata_edit_view.html', {'model': obj, 'name': name, 'datatype': datatype})
 
 
-@permission_based_access(groups=['mod'])
+@user_authenticated
 def subject_edit_view(request: HttpRequest, obj_pk: int):
-    course = Course.objects.get(pk=obj_pk)
-    if request.method == 'POST':
-        course_form = CourseForm(request.POST, instance=course)
-        if course_form.is_valid():
-            course_form.save()
-            messages.success(request, 'Changes saved')
-            return redirect('panel:semester-list-view')
+    try:
+        course = Course.objects.get(pk=obj_pk)
+        semester_id = course.semester.pk
+        if request.method == 'POST':
+            course_form = CourseForm(request.POST, instance=course)
+            if course_form.is_valid():
+                course_form.save()
+                messages.success(request, 'Changes saved')
+                return redirect('panel:semester-list-view')
+            else:
+                messages.error(request, 'Something went wrong')
+                return render(request, 'panel/subject_edit_view.html', {'course_form': course_form, 'semester_id': semester_id})
         else:
-            messages.error(request, 'Something went wrong')
-            return render(request, 'panel/subject_edit_view.html', {'course_form': course_form})
-    else:
-        try:
             course_form = CourseForm(instance=course)
-            return render(request, 'panel/subject_edit_view.html', {'course_form': course_form})
-        except Course.DoesNotExist:
-            messages.error(request, "Course with this id doesn't exist")
-            return redirect('panel:semester-list-view')
+            return render(request, 'panel/subject_edit_view.html', {'course_form': course_form, 'semester_id': semester_id})
+    except Course.DoesNotExist:
+
+        messages.error(request, "Course with this id doesn't exist")
+        return redirect('panel:semester-list-view')
 
 
-@permission_based_access(redirect_url='panel:semester-list-view', groups=['mod'])
+@user_authenticated
 def handle_semester_view(request: HttpRequest,  obj_pk: Optional[int] = None):
     if request.method == "POST":
         if obj_pk:
