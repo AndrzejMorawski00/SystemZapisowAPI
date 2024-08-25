@@ -9,8 +9,6 @@ from .forms import RegisterForm, LoginForm
 
 # Create your views here.
 
-# Na bardzo szybko bez obsługi błędów itd...
-
 
 @user_not_authenticated
 def login_view(request: HttpRequest):
@@ -18,16 +16,15 @@ def login_view(request: HttpRequest):
         login_form = LoginForm(request=request, data=request.POST)
         if login_form.is_valid():
 
-            username = login_form.cleaned_data.get('username')
-            password = login_form.cleaned_data.get('password')
+            username: str = login_form.cleaned_data.get('username', '')
+            password: str = login_form.cleaned_data.get('password', '')
             user = authenticate(request, username=username, password=password)
-            if user is not None:
+            if user is not None and user.is_staff:
                 login(request, user)
                 return redirect('panel:home-view')
             else:
                 messages.error(request, 'Invalid username or password')
         else:
-            messages.error(request, 'Something went wrong. Please try again')
             messages.error(request, 'Something went wrong. Please try again')
     login_form = LoginForm()
     return render(request, 'users/login.html', {'login_form': login_form, 'login': True, 'register': False})

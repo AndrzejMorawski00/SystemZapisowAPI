@@ -1,11 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 
-from rest_framework.response import Response
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
+
+from rest_framework.permissions import AllowAny
+from rest_framework.filters import SearchFilter
+
+from django_filters.rest_framework import DjangoFilterBackend
 
 
+from .filters import CourseFilter
+from .pagination import StandardResultSetPagination
 from .serializers import SemesterSerializer, CourseTagSerializer, CourseEffectSerializer, CourseTypeSerializer, CourseReadOnlySerializer
 from panel.models import Semester, CourseType, CourseTag, CourseEffect, Course
 
@@ -74,6 +79,10 @@ class SemesterRetriveAPIView(generics.RetrieveAPIView):
 
 class CourseListAPIView(generics.ListAPIView):
     serializer_class = CourseReadOnlySerializer
+    pagination_class = StandardResultSetPagination
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    search_fields = ['name']
+    filterset_class = CourseFilter
     permission_classes = [AllowAny]
 
     def get_queryset(self):
@@ -83,5 +92,5 @@ class CourseListAPIView(generics.ListAPIView):
                 semester = Semester.objects.get(pk=semester_id)
                 return Course.objects.filter(semester=semester).order_by('name')
             except Semester.DoesNotExist:
-                return None
-        return None
+                return Course.objects.none()
+        return Course.objects.none()

@@ -36,9 +36,9 @@ ALLOWED_HOSTS = ['*']
 # Rest Framework
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
@@ -54,14 +54,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # my apps
     'api.apps.ApiConfig',
-    'panel.apps.PanelConfig',
     'users.apps.UsersConfig',
+    'panel.apps.PanelConfig',
     'planner.apps.PlannerConfig',
+    # 3rd party apps
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     "django_browser_reload",
     'rest_framework',
+    'django_filters',
     'corsheaders',
-    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -158,7 +162,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 

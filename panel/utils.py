@@ -1,5 +1,18 @@
 import re
+from typing import List
+from django.http import HttpRequest
 from django.template.defaultfilters import slugify
+
+
+def has_permission(request: HttpRequest, groups: List[str]) -> bool:
+    is_admin = False
+    if request.user:
+        if request.user.is_staff or request.user.is_superuser:  # type:ignore
+            is_admin = True
+        mod = True if request.user.groups.filter(  # type:ignore
+            name__in=groups).exists() else False
+        return is_admin or mod
+    return False
 
 # source https://djangosnippets.org/snippets/690/
 

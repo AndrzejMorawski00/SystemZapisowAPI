@@ -1,7 +1,8 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.template.defaultfilters import slugify
-from .slug_methods import unique_slugify
+
+from panel.utils import unique_slugify
+
 # Create your models here.
 
 

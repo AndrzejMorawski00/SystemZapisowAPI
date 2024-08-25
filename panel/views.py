@@ -6,6 +6,8 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from typing import Any, Dict, List, Literal, Optional, Type,  cast
 
+from panel.utils import has_permission
+
 
 from .site_crawler import SiteCrawler
 from .forms import CourseForm, SemesterForm
@@ -14,15 +16,6 @@ from .models import Semester, CourseEffect, CourseTag, CourseType, Course
 # Create your views here.
 
 
-def has_permission(request: HttpRequest, groups: List[str]) -> bool:
-    is_admin = False
-    if request.user:
-        if request.user.is_staff or request.user.is_superuser:  # type:ignore
-            is_admin = True
-        mod = True if request.user.groups.filter(  # type:ignore
-            name__in=groups).exists() else False
-        return is_admin or mod
-    return False
 
 
 @user_authenticated
@@ -100,6 +93,7 @@ def semester_list_view(request: HttpRequest):
         tags = list(CourseTag.objects.all())
         effects = list(CourseEffect.objects.all())
         types = list(CourseType.objects.all())
+        
         if not (tags and effects and types):
             messages.error(request, 'You need to fetch Metadata First')
             return redirect('panel:semester-list-view')
