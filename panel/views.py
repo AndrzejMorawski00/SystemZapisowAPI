@@ -143,7 +143,7 @@ def semester_list_view(request: HttpRequest):
     invalid_semesters = Course.objects.filter(type=None)
     for s in invalid_semesters:
         print(s.pk, s)
-    return render(request, 'panel/semester_list_view.html', {'semester_list': semester_list})
+    return render(request, 'panel/semester_list_view.html', {'semester_list': semester_list, 'column_names': ['Semester', 'Fetched?', 'Select semesters to fetch data', 'View Subjects']})
 
 
 @user_authenticated

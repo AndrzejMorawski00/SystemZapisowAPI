@@ -15,17 +15,13 @@
 <form class='form' method='POST'>
 {%csrf_token %} 
 {% if semester_list %}
-<table class='table'>
-    <tr class='table__row'>
-        <th class='table__header'>Semester</th>
-        <th class='table__header'>Fetched?</th>
-        <th class='table__header'>Select semesters to fetch data</th>
-        <th class='table__header'>View Subjects</th>
-    </tr>
-    {% for semester in semester_list %}
-        {% include "panel/includes/semester_row.html" %}
-    {% endfor %}
-</table>
+
+<div class='table'>
+{% for column_name in column_names %}
+{% include "panel/includes/semester/semester_column.html" with column_name=column_name semester_list=semester_list %}
+{% endfor %}
+</div>
+
 {% else %}
 <div class='wrapper'>
     <p class='wrapper__p'>You need to fetch semesters first</p>

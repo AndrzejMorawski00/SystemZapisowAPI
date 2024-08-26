@@ -1,0 +1,17 @@
+<div class='table__column'>
+    <h2 class='table__header'>{{column_name}}</h2>
+    <ul class='column'>
+        {% for semester in semester_list %}
+            {% if column_name == 'Semester' %}
+                {% include 'panel/includes/semester/semester_link_column.html' with semester=semester %}
+            {% elif column_name == 'Fetched?' or column_name == 'Select semesters to fetch data' %}
+                {% include 'panel/includes/semester/checkbox_column.html' with semester=semester column_name=column_name %}
+            {% else %}
+                {% include "panel/includes/semester/subject_link_column.html" %}
+            {% endif %} 
+        {% endfor %}
+    </ul>
+</div>
+
+
+    
