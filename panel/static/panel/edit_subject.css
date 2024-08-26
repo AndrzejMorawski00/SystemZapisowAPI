@@ -1,0 +1,70 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 80vw;
+    margin-top: 2rem;
+    gap: 2rem;
+}
+
+.wrapper {
+    display: flex;
+    gap: 1rem;
+}
+
+.form__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form__left {
+    flex: 1;
+    justify-content: space-between;
+    padding-right: 2rem;
+    border-right: 2px solid var(--auth-button-color);
+}
+
+.form__right {
+    margin-left: 1rem;
+}
+
+.form__row {
+    display: flex;
+    flex-direction: column;
+}
+
+.form__label {
+    font-size: 2rem;
+    color: var(--foreground-color);
+    letter-spacing: 1px;
+}
+
+.form__input {
+    background-color: var(--input-background-color);
+    color: var(--foreground-color);
+    padding: 1rem 2rem;
+    font-size: 2rem;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid var(--auth-button-color);
+    letter-spacing: 2px;
+}
+
+
+.form__select {
+    background-color: var(--input-background-color);
+    color: var(--foreground-color);
+    padding: 1rem 2rem;
+    font-size: 2rem;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid var(--auth-button-color);
+    letter-spacing: 2px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--background-color) var(--input-background-color);
+}
+
+.form__select option {
+    font-size: 1.2.rem;
+}

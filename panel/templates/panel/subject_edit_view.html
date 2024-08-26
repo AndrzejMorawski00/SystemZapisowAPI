@@ -1,14 +1,52 @@
 {% extends "panel.html" %} 
 {% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'panel/edit_subject.css' %}">
+    <link rel="stylesheet" href="{% static 'panel/edit_subject_buttons.css' %}">
+    <link rel="stylesheet" href="{% static 'panel/checkbox_styles.css' %}">
+{% endblock styles %}
 {% block title %} Edit Subject {% endblock title %}
 {% block header %} 
     {% include "panel/includes/header.html" %} 
 {% endblock header %} 
 
 {% block content %}
-<form method="POST">
-    {% csrf_token %} {{course_form.as_p}}
-    <button type="submit">Edit</button>
-    <a href="{% url 'panel:subject-list-view'  pk=16  %}"><button type='button'>Cancel</button></a>
+{%include 'panel/includes/messages.html' %}
+<form class='form' method="POST">
+    {% csrf_token %} 
+    <div class="wrapper">
+        <div class='form__wrapper form__left'>
+            <div class='form__row'>
+                <label class='form__label' for="name">Name:</label>
+                {{course_form.name}}
+            </div>
+            <div class='form__row'v>
+                <label class='form__label' for="ects">ECTS:</label>
+                {{course_form.ects}}
+            </div>
+            <div class='form__checkbox'>
+                {{course_form.recommended_for_first_year}}
+                <label class='form__label' for="recommended_for_first_year">Recommended For First Year?</label>
+            </div>
+        </div>
+        <div class='form__wrapper form__right'>
+            <div class='form__row'v>
+                <label class='form__label' for="type">Type:</label>
+                {{course_form.type}}
+            </div>
+            <div class='form__row'>
+                <label class='form__label' for="tags">Tags:</label>
+                {{course_form.tags}}
+            </div>
+            <div class='form__row'>
+                <label class='form__label' for="effects">Effects:</label>
+                {{course_form.effects}}
+            </div>
+        </div>
+    </div>
+    <div class="form__buttons">
+        <button class='form__button' type="submit">Edit</button>
+        <a href="{% url 'panel:subject-list-view'  pk=16  %}"><button class='form__button' type='button'>Cancel</button></a>
+    </div>
 </form>
 {% endblock content %}

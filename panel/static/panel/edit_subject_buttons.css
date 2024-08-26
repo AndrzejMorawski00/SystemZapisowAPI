@@ -1,0 +1,26 @@
+.form__buttons {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.form__button {
+    padding: 1rem 2rem;
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    background-color: var(--auth-button-color);
+    color: var(--foreground-color);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+}
+
+.form__button[type='submit']:hover {
+    background-color: var(--success-color);
+}
+
+.form__button[type='button']:hover {
+    background-color: var(--error-color);
+}
