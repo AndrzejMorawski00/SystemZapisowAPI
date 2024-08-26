@@ -1,0 +1,12 @@
+<div class="main__wrapper">
+    {% if endpoint.additional_data %}
+    <a class="main__link" href="{% url endpoint.url endpoint.additional_data %}">{{ endpoint.name }}</a>
+    {% else %}
+    <a class="main__link" href="{% url endpoint.url %}">{{ endpoint.name }}</a>
+    {% endif %}
+    <div class='endpoint__wrapper'>
+        <h2 class="endpoint__h2">Endpoint Path:</h2>
+        <p class="endpoint__p"><span class='endpoint__span'>List: </span> {{ endpoint.list_path }}</p>
+        <p class="endpoint__p"><span class='endpoint__span'>Details: </span> {{ endpoint.detailed_path }}</p>
+    </div>
+</div>

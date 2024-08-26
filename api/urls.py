@@ -19,5 +19,6 @@ urlpatterns = [
     path('api/semesters/', views.SemesterListAPIView.as_view(), name='semesters-list-view'),
     path('api/semesters/<int:pk>/', views.SemesterRetriveAPIView.as_view(), name='semester-view'),
 
-    path('api/courses/<int:semester_id>/', views.CourseListAPIView.as_view(), name='course-list-view'),
+    path('api/courses/<int:semester_pk>/', views.CourseListAPIView.as_view(), name='course-list-view'),
+    path('api/courses/<int:semester_pk>/<int:course_pk>/', views.CourseRetrieveAPIView.as_view(), name='course-list-view'),
 ]

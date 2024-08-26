@@ -11,14 +11,16 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .filters import CourseFilter
 from .pagination import StandardResultSetPagination
-from .serializers import SemesterSerializer, CourseTagSerializer, CourseEffectSerializer, CourseTypeSerializer, CourseReadOnlySerializer
+from .serializers import CourseSerializer, SemesterSerializer, CourseTagSerializer, CourseEffectSerializer, CourseTypeSerializer, CourseReadOnlySerializer
 from panel.models import Semester, CourseType, CourseTag, CourseEffect, Course
+
+from api.constants import api_endpoints
 
 # Create your views here.
 
 
 def index(request: HttpRequest):
-    return render(request, 'api/home.html', {})
+    return render(request, 'api/home.html', {'api_endpoints': api_endpoints})
 
 
 def api_view(request: HttpRequest):
@@ -94,3 +96,17 @@ class CourseListAPIView(generics.ListAPIView):
             except Semester.DoesNotExist:
                 return Course.objects.none()
         return Course.objects.none()
+
+
+class CourseRetrieveAPIView(generics.RetrieveAPIView):
+    serializer_class = CourseSerializer
+    permission_classes = [AllowAny]
+
+    def get_object(self):
+        course_id = self.kwargs.get('course_pk')
+        if course_id:
+            try:
+                return Course.objects.get(pk=course_id)
+            except Course.DoesNotExist:
+                raise Course.DoesNotExist("Course doesn't exists")
+        raise Exception("Didn't provide course pk")
