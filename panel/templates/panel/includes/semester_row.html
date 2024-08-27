@@ -2,7 +2,19 @@
     <td class='table__data'>
         <a class='table__link' href="{% url  'panel:edit-semester-view' semester.pk %}">{{semester.name}}</a>
     </td>
-    <td class='table__data'><input class='form__checkbox' type="checkbox" name="semester_checked" id="semester_{{semester.pk}} " {% if semester.fetched %}checked{%endif%} disabled></td>
-    <td class='table__data'><input class='form__checkbox' type="checkbox" name="semester_checked" id="semester_{{semester.pk}}" value="{{semester.pk}}"></td>
-    <td class='table__data'><a class='table__link' href="{% url 'panel:subject-list-view' semester.pk %}">View Subjects</a></td>
+    <td class='table__data'>
+       <div class='checkbox__wrapper'>
+        <input type="checkbox" name="semester_checked" id="semester_{{semester.pk}}" {% if semester.fetched %}checked{%endif%} disabled>
+        <label for="semester_{{semester.pk}}"></label>
+       </div>
+    </td>
+    <td class='table__data'>
+        <div class='checkbox__wrapper'>
+            <input type="checkbox" name="semester_checked" id="semester_{{semester.pk}}" value="{{semester.pk}}">
+            <label for="semester_{{semester.pk}}"></label>
+        </div>
+    </td>
+    <td class='table__data'> 
+        <a class='table__link' href="{% url 'panel:subject-list-view' semester.pk %}">View Subjects</a>
+    </td>
 </tr>    

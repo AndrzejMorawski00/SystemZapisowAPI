@@ -88,7 +88,7 @@ class CourseListAPIView(generics.ListAPIView):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        semester_id = self.kwargs.get('semester_id')
+        semester_id = self.kwargs.get('semester_pk')
         if semester_id:
             try:
                 semester = Semester.objects.get(pk=semester_id)

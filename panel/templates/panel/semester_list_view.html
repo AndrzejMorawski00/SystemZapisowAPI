@@ -16,11 +16,16 @@
 {%csrf_token %} 
 {% if semester_list %}
 
-<div class='table'>
-{% for column_name in column_names %}
-{% include "panel/includes/semester/semester_column.html" with column_name=column_name semester_list=semester_list %}
-{% endfor %}
-</div>
+<table class='table'>
+    <tr class='table__row'>
+        {% for column in column_names %}
+        <th class='table__header'>{{column}}</th>
+        {% endfor %}
+    </tr>
+    {% for semester in semester_list %}
+        {% include "panel/includes/semester_row.html" %}
+    {% endfor %}
+</table>
 
 {% else %}
 <div class='wrapper'>
