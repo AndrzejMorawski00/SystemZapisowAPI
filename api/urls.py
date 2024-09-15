@@ -5,7 +5,6 @@ app_name = 'api'
 
 urlpatterns = [
     path('', views.index, name='index-view'),
-    path('api/', views.api_view, name='api-view'),
 
     path('api/tags/', views.CourseTagListAPIView.as_view(), name='tags-list-view'),
     path('api/tags/<int:pk>/', views.CourseTagRetriveAPIView.as_view(), name='tag-view'),

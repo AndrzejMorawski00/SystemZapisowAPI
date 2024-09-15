@@ -23,9 +23,6 @@ def index(request: HttpRequest):
     return render(request, 'api/home.html', {'api_endpoints': api_endpoints})
 
 
-def api_view(request: HttpRequest):
-    return HttpResponse('API Sweet Api')
-
 
 class CourseTagListAPIView(generics.ListAPIView, ):
     serializer_class = CourseTagSerializer
