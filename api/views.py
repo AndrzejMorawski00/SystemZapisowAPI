@@ -23,7 +23,6 @@ def index(request: HttpRequest):
     return render(request, 'api/home.html', {'api_endpoints': api_endpoints})
 
 
-
 class CourseTagListAPIView(generics.ListAPIView, ):
     serializer_class = CourseTagSerializer
     permission_classes = [AllowAny]

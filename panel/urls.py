@@ -22,6 +22,8 @@ urlpatterns = [
          name='subject-list-view'),
     path('subject-list/edit/<int:obj_pk>',
          views.subject_edit_view, name='subject-edit-view'),
+    path('subject-list/add',
+         views.add_subject_list, name='add-subject-list-view'),
 
     # semsters
 

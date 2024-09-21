@@ -1,4 +1,5 @@
-from django.db import models
+import json
+from django.db import models, IntegrityError
 from django.db.models import Q
 from django.contrib import messages
 from django.http import HttpRequest
@@ -6,7 +7,8 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from typing import Any, Dict, List, Literal, Optional, Type,  cast
 
-from panel.utils import has_permission
+from panel.types import CourseDataDict
+from panel.utils import has_permission, schema
 
 from .site_crawler import SiteCrawler
 from .forms import CourseForm, SemesterForm
@@ -122,15 +124,15 @@ def semester_list_view(request: HttpRequest):
                             pk__in=subject_dict['effects']))
                         course = Course.objects.create(pk=int(
                             subject_dict['id']), name=subject_dict['name'], url=subject_dict['url'], semester=semester, recommended_for_first_year=subject_dict['recommendedForFirstYear'], ects=ects, type=course_type)
-                    except (CourseTag.DoesNotExist, CourseType.DoesNotExist, CourseEffect.DoesNotExist, Course.MultipleObjectsReturned) as e:
+                        if tags:
+                            course.tags.add(*tags)
+                        if effects:
+                            course.effects.add(*effects)
+                        course.save()
+                        counter += 1
+                    except (CourseTag.DoesNotExist, CourseType.DoesNotExist, CourseEffect.DoesNotExist, Course.MultipleObjectsReturned, IntegrityError) as e:
                         print(f'Exception {e}')
                         continue
-                    if tags:
-                        course.tags.add(*tags)
-                    if effects:
-                        course.effects.add(*effects)
-                    course.save()
-                    counter += 1
             semester.fetched = True
             semester.save()
         if counter == 0:
@@ -142,7 +144,7 @@ def semester_list_view(request: HttpRequest):
     semester_list = Semester.objects.all()
     invalid_semesters = Course.objects.filter(type=None)
     for s in invalid_semesters:
-        print(s.pk, s)
+        print(f'Invalid Semester: {s.pk}, {s.name}')
     return render(request, 'panel/semester_list_view.html', {'semester_list': semester_list, 'column_names': ['Semester', 'Fetched?', 'Select semesters to fetch data', 'View Subjects']})
 
 
@@ -163,6 +165,43 @@ def subject_list_view(request: HttpRequest, pk: int):
     except Semester.DoesNotExist:
         messages.error(request, "Semester with this id doesn't exist")
         return redirect('semester-list-view')
+
+
+@user_authenticated
+def add_subject_list(request: HttpRequest):
+    if request.method == 'POST':
+        data: str = request.POST.get('courses', '{}')
+        counter = 0
+        try:
+            JSONData: CourseDataDict = json.loads(data)
+            courses = JSONData['courses']
+            semester = Semester.objects.get(pk=JSONData['semester'])
+
+            for course in courses:
+                type = CourseType.objects.get(pk=course['type']['id'])
+                tags = CourseTag.objects.filter(
+                    pk__in=[data['id'] for data in course['tags'] or []])
+                effects = CourseEffect.objects.filter(
+                    pk__in=[data['id'] for data in course['effects'] or []])
+                try:
+                    course_obj = Course.objects.create(pk=course['id'], name=course['name'], type=type,  url=course['url'],
+                                                       semester=semester, recommended_for_first_year=course['recommended_for_first_year'], ects=course['ects'])
+                    course_obj.tags.add(*tags)
+                    course_obj.effects.add(*effects)
+                    course_obj.save()
+                    counter += 1
+                except IntegrityError as e:
+                    print(f"Integrity error for course {course['name']}: {e}")
+        except (Semester.DoesNotExist, CourseType.DoesNotExist, json.JSONDecodeError) as e:
+            print(e)
+        if counter == 0:
+            messages.success(request, "Didn't add any subject")
+        elif counter == 1:
+            messages.success(request, 'Added 1 subject')
+        else:
+            messages.success(request, f'Added {counter} subjects')
+
+    return render(request, 'panel/add_subject_list.html', {'schema': schema})
 
 
 @user_authenticated

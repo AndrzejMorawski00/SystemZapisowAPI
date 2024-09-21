@@ -1,0 +1,30 @@
+{% extends "panel.html" %}
+{% load static %}
+{% block title %}Add Courses{% endblock title %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'panel/add_subject_list.css' %}">
+{% endblock styles %}
+
+{% block header %}
+    {% include "panel/includes/header.html" %}
+{% endblock header %}
+
+{% block content %}
+    {% include "panel/includes/messages.html" %}
+    <form class="form" method="POST">
+        {% csrf_token %}
+        <div class="wrapper">
+            <p class="form__p">Insert List of courses as a list of JSON</p>
+            <textarea class="form__input" name="courses" id="courses" >{{schema}}</textarea>
+            <div class="form__wrapper">
+                <button class="form__button" type="submit">Submit</button>
+                <a href="{% url 'panel:home-view' %}">
+                    <button class="form__button" type="button">Cancel</button>
+                </a>
+            </div>
+        </div>
+    </form>
+    
+
+{% endblock content %}

@@ -34,7 +34,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['id', 'name', 'recommended_for_first_year',
+        fields = ['id', 'name','url', 'recommended_for_first_year',
                   'type', 'ects', 'tags', 'effects']
 
 
@@ -45,7 +45,7 @@ class CourseReadOnlySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['id', 'name', 'recommended_for_first_year',
+        fields = ['id', 'name','url', 'recommended_for_first_year',
                   'type', 'ects', 'tags', 'effects']
 
     def to_representation(self, instance):

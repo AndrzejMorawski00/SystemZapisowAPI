@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from datetime import timedelta
+from django.core.management.utils import get_random_secret_key
 from pathlib import Path
 import dotenv
 import os
@@ -26,12 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
-SECRET_KEY = os.environ["SECRET_KEY"]
-
+SECRET_KEY = os.getenv("SECRET_KEY", default=get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 # Rest Framework
 
@@ -60,9 +60,9 @@ INSTALLED_APPS = [
     'panel.apps.PanelConfig',
     'planner.apps.PlannerConfig',
     # 3rd party apps
+    "django_browser_reload",
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
-    "django_browser_reload",
     'rest_framework',
     'django_filters',
     'corsheaders',
@@ -80,6 +80,7 @@ MIDDLEWARE = [
     "django_browser_reload.middleware.BrowserReloadMiddleware",
     'corsheaders.middleware.CorsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'SystemZapisowAPI.urls'
 
@@ -150,11 +151,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -166,5 +166,6 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWS_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+CORS_ALLOW_CREDENTIALS = True
+

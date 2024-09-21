@@ -85,3 +85,37 @@ def _slug_strip(value, separator='-'):
             re_sep = re.escape(separator)
         value = re.sub(r'^%s+|%s+$' % (re_sep, re_sep), '', value)
     return value
+
+
+schema = '''{
+  "semester": int,
+  "courses": [
+    {
+      "id": int,
+      "name": str,
+      "url": str,
+      "recommended_for_first_year": boolean,
+      "type": {
+        "id": int,
+        "name": str,
+        "shortcut": str
+      },
+      "ects": int,
+      "tags": [
+        {
+          "id": int,
+          "name": str,
+          "shortcut": str
+        }
+      ],
+      "effects": [
+        {
+          "id": int,
+          "name": str,
+          "shortcut": str
+        }
+      ]
+    }
+  ]
+}
+'''
