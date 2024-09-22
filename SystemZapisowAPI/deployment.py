@@ -21,7 +21,8 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = []
+CORS_ALLOWED_ORIGINS = [
+    'https://jolly-glacier-0187bfe03.5.azurestaticapps.net']
 
 STORAGES = {
     "default": {

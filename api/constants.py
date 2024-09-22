@@ -1,3 +1,5 @@
+from api.utils import get_initial_semester_id
+
 api_endpoints = [
     {
         'name': 'Tags',
@@ -30,7 +32,7 @@ api_endpoints = [
     {
         'name': 'Courses',
         'url': 'api:course-list-view',
-        'additional_data': 28,
+        'additional_data': get_initial_semester_id(),
         'list_path': 'api/courses/<int:semester_pk>/',
         'detailed_path': 'api/courses/<int:semester_pk>/<int:course_pk>/'
     }
